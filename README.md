@@ -1,0 +1,2 @@
+# The_Obsidian_Deleometer
+An AI_DeepSelf_Discovery_Journaling_Tool
