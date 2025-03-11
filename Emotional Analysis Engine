@@ -1,15 +1,146 @@
-async function analyzeEntry(
-  text: string,
-  emotions: string[] = ["sadness", "joy", "anxiety"]
-): Promise<string> {
-  const prompt = `Analyze the following journal entry for emotional patterns (${emotions.join(
-    ", "
-  )}). Respond in 1-2 sentences.\n\nEntry:\n"""${text}"""`;
+import { Plugin, TFile, Notice, moment } from 'obsidian';
+import OpenAI from 'openai';
 
-  try {
-    return await callOpenAI(prompt);
-  } catch (error) {
-    console.error("Error analyzing entry:", error);
-    return "Error analyzing entry. Please try again.";
-  }
+interface EmotionalAnalysis {
+    emotions: string[];
+    lacanianInsight: string;
+    bigFive: {
+        openness: number;
+        conscientiousness: number;
+        extraversion: number;
+        neuroticism: number;
+        agreeableness: number;
+    };
+    summary: string;
+    goals: string[];
+}
+
+interface PluginSettings {
+    openaiApiKey: string;
+    analysisDepth: 'surface' | 'deep';
+}
+
+const DEFAULT_SETTINGS: PluginSettings = {
+    openaiApiKey: '',
+    analysisDepth: 'deep'
+};
+
+export default class EmotionalAnalysisEngine extends Plugin {
+    settings: PluginSettings;
+    openai: OpenAI;
+
+    async onload() {
+        await this.loadSettings();
+        
+        this.openai = new OpenAI({
+            apiKey: this.settings.openaiApiKey,
+            dangerouslyAllowBrowser: true
+        });
+
+        // Add ribbon icon for analysis
+        this.addRibbonIcon('brain-circuit', 'Analyze Journal', async () => {
+            await this.analyzeActiveJournal();
+        });
+
+        // Add daily auto-analysis
+        this.registerInterval(window.setInterval(() => {
+            if (moment().hour() === 20) { // 8 PM
+                this.analyzeTodayJournal();
+            }
+        }, 60 * 1000));
+    }
+
+    async analyzeActiveJournal() {
+        const activeFile = this.app.workspace.getActiveFile();
+        if (activeFile) {
+            await this.performAnalysis(activeFile);
+        }
+    }
+
+    async analyzeTodayJournal() {
+        const dailyNote = `Journal/${moment().format('YYYY-MM-DD')}.md`;
+        const file = this.app.vault.getAbstractFileByPath(dailyNote);
+        if (file instanceof TFile) {
+            await this.performAnalysis(file);
+        }
+    }
+
+    private async performAnalysis(file: TFile) {
+        try {
+            const content = await this.app.vault.read(file);
+            const analysis = await this.analyzeContent(content);
+            
+            await this.appendAnalysisToFile(file, analysis);
+            new Notice('Analysis complete! 🧠');
+            
+        } catch (error) {
+            console.error('Analysis failed:', error);
+            new Notice('Analysis failed. Check console for details.');
+        }
+    }
+
+    private async analyzeContent(content: string): Promise<EmotionalAnalysis> {
+        const prompt = `
+        Perform deep emotional analysis with Lacanian psychoanalytic perspective:
+        
+        Journal Entry:
+        ${content}
+
+        Respond in JSON format:
+        {
+            "emotions": ["list of primary emotions"],
+            "lacanianInsight": "psychoanalytic interpretation using Lacanian concepts",
+            "bigFive": {
+                "openness": 0-1,
+                "conscientiousness": 0-1,
+                "extraversion": 0-1,
+                "neuroticism": 0-1,
+                "agreeableness": 0-1
+            },
+            "summary": "brief integrative summary",
+            "goals": ["SMART goals based on analysis"]
+        }
+        `;
+
+        const response = await this.openai.chat.completions.create({
+            model: 'gpt-4',
+            messages: [{ role: 'user', content: prompt }],
+            response_format: { type: "json_object" }
+        });
+
+        return JSON.parse(response.choices[0].message.content);
+    }
+
+    private async appendAnalysisToFile(file: TFile, analysis: EmotionalAnalysis) {
+        let content = await this.app.vault.read(file);
+        
+        // Add YAML frontmatter
+        if (!content.startsWith('---')) {
+            content = `---\n---\n${content}`;
+        }
+
+        const yamlBlock = content.match(/^---\n[\s\S]*?\n---/);
+        let newYaml = yamlBlock ? yamlBlock[0] : '---\n---';
+
+        // Update YAML with analysis
+        newYaml = newYaml.replace(/---$/, 
+            `emoAnalysis: ${JSON.stringify(analysis.emotions)}
+            lacanianInsight: "${analysis.lacanianInsight}"
+            bigFive: ${JSON.stringify(analysis.bigFive)}
+            ---`
+        );
+
+        content = content.replace(yamlBlock?.[0] || '---\n---', newYaml);
+        content += `\n\n## AI Analysis\n${analysis.summary}\n\n### Recommended Goals\n${analysis.goals.map(g => `- [ ] ${g}`).join('\n')}`;
+
+        await this.app.vault.modify(file, content);
+    }
+
+    async loadSettings() {
+        this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    }
+
+    async saveSettings() {
+        await this.saveData(this.settings);
+    }
 }
