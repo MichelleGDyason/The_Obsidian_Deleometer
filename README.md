@@ -13,3 +13,9 @@ However, I reserve the right to relicense under MIT in the future if:
 - The community overwhelmingly prefers a more permissive license.  
 
 **I will never sell exclusive rights to this code.**  
+
+
+## Support My Work
+
+If this plugin helps you, consider [buying me a coffee](https://buymeacoffee.com/theobsidiay) or  
+[sponsoring me on GitHub](https://github.com/sponsors/MichelleGDyason)
