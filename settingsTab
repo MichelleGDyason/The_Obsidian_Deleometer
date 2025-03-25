@@ -1,0 +1,33 @@
+import { App, PluginSettingTab, Setting } from 'obsidian';
+
+export class AIJournalSettingsTab extends PluginSettingTab {
+  plugin: DeleometerAIJournalPlugin;
+
+  display(): void {
+    const { containerEl } = this;
+
+    // Free tier: OpenAI key input
+    new Setting(containerEl)
+      .setName('OpenAI API Key')
+      .setDesc('Required for basic analysis')
+      .addText((text) =>
+        text
+          .setPlaceholder('sk-...')
+          .setValue(this.plugin.settings.openaiKey)
+          .onChange(async (value) => {
+            this.plugin.settings.openaiKey = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    // Premium tier: Unlock advanced features
+    new Setting(containerEl)
+      .setName('Premium Features')
+      .setDesc('Subscribe to unlock Lacanian analysis and goal tracking')
+      .addButton((button) =>
+        button
+          .setButtonText('Subscribe ($9/month)')
+          .onClick(() => window.open('https://your-stripe-link'))
+      );
+  }
+}
