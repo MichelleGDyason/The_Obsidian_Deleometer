@@ -1,0 +1,88 @@
+/**
+ * NLP Engine for AI Deep Self Discovery Journaling Plugin
+ * Provides emotional analysis, psychoanalytic insights, schizoanalysis, and personality profiling.
+ */
+
+import natural from 'natural';
+import { SentimentAnalyzer, PorterStemmer } from 'natural';
+const analyzer = new SentimentAnalyzer('English', PorterStemmer, 'afinn');
+
+export function analyzeEmotions(text) {
+    const emotions = { joy: 0, sadness: 0, anger: 0, fear: 0, surprise: 0 };
+    
+    const emotionKeywords = {
+        joy: ['happy', 'joy', 'excited', 'love', 'pleased'],
+        sadness: ['sad', 'depressed', 'down', 'unhappy', 'miserable'],
+        anger: ['angry', 'furious', 'annoyed', 'resentful', 'irritated'],
+        fear: ['scared', 'afraid', 'anxious', 'nervous', 'worried'],
+        surprise: ['shocked', 'amazed', 'astonished', 'startled', 'unexpected']
+    };
+    
+    for (const [emotion, keywords] of Object.entries(emotionKeywords)) {
+        keywords.forEach(keyword => {
+            const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+            const matches = text.match(regex);
+            if (matches) emotions[emotion] += matches.length;
+        });
+    }
+    
+    return { ...emotions, sentiment: analyzer.getSentiment(text.split(' ')) };
+}
+
+export function generatePsychoanalyticResponse(text) {
+    let response = '';
+    
+    if (/mother|father|parent|childhood/i.test(text)) {
+        response += "It seems your thoughts revolve around familial relationships. Freud might interpret this as linked to early developmental influences.\n\n";
+    }
+    
+    if (/dream|subconscious|hidden desire/i.test(text)) {
+        response += "You're reflecting on subconscious elements. Lacan would say your 'real' self is attempting to emerge.\n\n";
+    }
+    
+    if (/loss|absence|longing/i.test(text)) {
+        response += "There's a theme of loss and desire in your writing. This could indicate a search for meaning beyond immediate experience.\n\n";
+    }
+    
+    return response || "No strong psychoanalytic patterns detected.";
+}
+
+export function getPersonalityProfile(text) {
+    const traits = { extroversion: 0, introversion: 0, openness: 0, conscientiousness: 0, neuroticism: 0 };
+    
+    const personalityKeywords = {
+        extroversion: ['party', 'social', 'friends', 'outgoing', 'talkative'],
+        introversion: ['alone', 'quiet', 'reserved', 'reflective', 'solitude'],
+        openness: ['creative', 'curious', 'imaginative', 'adventurous', 'novel'],
+        conscientiousness: ['organized', 'responsible', 'goal', 'disciplined', 'efficient'],
+        neuroticism: ['stressed', 'nervous', 'worried', 'moody', 'tense']
+    };
+    
+    for (const [trait, keywords] of Object.entries(personalityKeywords)) {
+        keywords.forEach(keyword => {
+            const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+            const matches = text.match(regex);
+            if (matches) traits[trait] += matches.length;
+        });
+    }
+    
+    return traits;
+}
+
+export function performSchizoanalysis(text) {
+    let response = '';
+    
+    if (/desire|flows|machine|assemblage/i.test(text)) {
+        response += "Your writing exhibits machinic flows of desire, breaking from traditional structures. Deleuze and Guattari would interpret this as a deterritorialized form of thought.\n\n";
+    }
+    
+    if (/rhizome|nomad|multiplicity/i.test(text)) {
+        response += "You express nonlinear and interconnected thought patterns, resonating with rhizomatic structures and nomadic thinking.\n\n";
+    }
+    
+    if (/control|stratum|territory/i.test(text)) {
+        response += "There is a theme of control and reterritorialization in your writing, suggesting oscillations between deterritorialization and stratification.\n\n";
+    }
+    
+    return response || "No strong schizoanalytic patterns detected.";
+}
