@@ -1,0 +1,10 @@
+{
+    "id": "deleometer",
+    "name": "Deleometer",
+    "version": "1.0.0",
+    "minAppVersion": "0.15.0",
+    "description": "Theoretical analysis for journal entries and media",
+    "author": "Michelle G. Dyason",
+    "authorUrl": "https://github.com/MichelleGDyason",
+    "isDesktopOnly": false
+}
