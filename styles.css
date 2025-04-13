@@ -1,0 +1,699 @@
+/* Styles for Freudian analysis modal */
+.freudian-structure {
+  background: var(--background-secondary);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.column {
+  background: var(--background-primary);
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.column h4 {
+  color: var(--text-accent);
+  margin: 0 0 0.5rem 0;
+}
+
+/* Dashboard styles */
+.deleometer-dashboard {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.deleometer-dashboard-header {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: 0.5rem;
+}
+
+.deleometer-dashboard-header h2 {
+  margin: 0;
+  color: var(--text-normal);
+}
+
+.deleometer-dashboard-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background: var(--background-secondary);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.deleometer-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.deleometer-control-group label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.deleometer-chart-container {
+  flex: 1;
+  min-height: 400px;
+  background: var(--background-primary);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.deleometer-chart-canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.deleometer-dashboard-insights {
+  background: var(--background-secondary);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.deleometer-dashboard-insights h3 {
+  margin-top: 0;
+  color: var(--text-normal);
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.deleometer-insights-content {
+  color: var(--text-normal);
+}
+
+.deleometer-insights-content p {
+  margin: 0.5rem 0;
+}
+
+.deleometer-emotion-breakdown {
+  margin-top: 1rem;
+}
+
+.deleometer-emotion-breakdown h4 {
+  margin: 0.5rem 0;
+  color: var(--text-accent);
+}
+
+.deleometer-emotion-breakdown ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.deleometer-export-btn {
+  align-self: flex-end;
+}
+
+.deleometer-no-data {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 2rem 0;
+}
+
+.deleometer-error {
+  text-align: center;
+  color: var(--text-error);
+  font-style: italic;
+  padding: 2rem 0;
+}
+
+/* Advanced AI features styles */
+
+/* Voice journaling */
+.deleometer-voice-modal {
+  width: 500px;
+  max-width: 100%;
+}
+
+.deleometer-audio-container {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.deleometer-audio-container audio {
+  width: 100%;
+}
+
+.deleometer-transcription-container {
+  margin: 1rem 0;
+  min-height: 200px;
+}
+
+.deleometer-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.deleometer-spinner {
+  animation: spin 2s linear infinite;
+  color: var(--text-accent);
+  font-size: 2rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.deleometer-transcription-text {
+  width: 100%;
+  min-height: 200px;
+  padding: 0.5rem;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* Feedback collection */
+.deleometer-feedback-modal {
+  width: 500px;
+  max-width: 100%;
+}
+
+.deleometer-feedback-description {
+  margin-bottom: 1rem;
+  color: var(--text-muted);
+}
+
+.deleometer-rating-container {
+  margin: 1rem 0;
+}
+
+.deleometer-stars {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.deleometer-star {
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  transition: color 0.2s ease;
+}
+
+.deleometer-star.hovered,
+.deleometer-star.selected {
+  color: var(--text-accent);
+}
+
+.deleometer-comments-container {
+  margin: 1rem 0;
+}
+
+.deleometer-comments-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-family: inherit;
+  resize: vertical;
+}
+
+.deleometer-corrections-container {
+  margin: 1rem 0;
+}
+
+.deleometer-corrections-description {
+  margin-bottom: 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.deleometer-corrections-section {
+  margin: 1rem 0;
+}
+
+.deleometer-corrections-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.deleometer-correction-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.deleometer-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.deleometer-slider {
+  flex: 1;
+}
+
+.deleometer-slider-value {
+  width: 2rem;
+  text-align: center;
+}
+
+.deleometer-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Test Runner styles */
+.deleometer-test-results-modal {
+  width: 700px;
+  max-width: 100%;
+  max-height: 80vh;
+}
+
+.deleometer-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--background-modifier-border);
+  margin-bottom: 1rem;
+}
+
+.deleometer-tab {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-right: 1rem;
+}
+
+.deleometer-tab.active {
+  border-bottom-color: var(--text-accent);
+  font-weight: bold;
+}
+
+.deleometer-tab-content {
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.deleometer-test-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: var(--background-secondary);
+  border-radius: 8px;
+}
+
+.deleometer-test-stat {
+  text-align: center;
+}
+
+.deleometer-test-stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.deleometer-test-passed {
+  color: var(--text-success);
+}
+
+.deleometer-test-failed {
+  color: var(--text-error);
+}
+
+.deleometer-test-skipped {
+  color: var(--text-muted);
+}
+
+.deleometer-test-results {
+  margin-bottom: 1rem;
+}
+
+.deleometer-test-result {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.deleometer-test-result-status {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.deleometer-test-result-name {
+  flex: 1;
+}
+
+.deleometer-test-result-details {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.deleometer-test-result-message {
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.deleometer-test-result-error {
+  color: var(--text-error);
+  font-family: monospace;
+  white-space: pre-wrap;
+  padding: 0.5rem;
+  background: var(--background-modifier-error);
+  border-radius: 4px;
+}
+
+.deleometer-test-components {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.deleometer-test-component {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.deleometer-test-component-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.deleometer-test-component-header h3 {
+  margin: 0;
+}
+
+.deleometer-test-component-stats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Loading indicator styles */
+.deleometer-loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  gap: 0.5rem;
+}
+
+.deleometer-spinner {
+  color: var(--text-accent);
+  font-size: 2rem;
+}
+
+.deleometer-loading-text {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Analysis modal styles */
+.deleometer-analysis-modal {
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.deleometer-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.deleometer-modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.deleometer-date {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.deleometer-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.deleometer-tab {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+}
+
+.deleometer-tab:hover {
+  color: var(--text-normal);
+  background-color: var(--background-secondary-alt);
+}
+
+.deleometer-tab.active {
+  color: var(--text-accent);
+  border-bottom-color: var(--text-accent);
+}
+
+.deleometer-tab-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.deleometer-tab-pane {
+  display: none;
+}
+
+.deleometer-tab-pane.active {
+  display: block;
+}
+
+.deleometer-modal-footer {
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--background-modifier-border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Chart styles */
+.deleometer-chart {
+  margin-bottom: 1.5rem;
+}
+
+.deleometer-emotion-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.deleometer-emotion-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.deleometer-emotion-label {
+  width: 80px;
+  text-align: right;
+  font-size: 0.9rem;
+}
+
+.deleometer-emotion-bar {
+  flex: 1;
+  height: 20px;
+  background-color: var(--background-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.deleometer-emotion-bar-fill {
+  height: 100%;
+  background-color: var(--text-accent);
+  transition: width 0.3s ease;
+}
+
+.deleometer-emotion-bar-fill.joy {
+  background-color: #FFD700; /* Gold */
+}
+
+.deleometer-emotion-bar-fill.sadness {
+  background-color: #4682B4; /* Steel Blue */
+}
+
+.deleometer-emotion-bar-fill.anger {
+  background-color: #DC143C; /* Crimson */
+}
+
+.deleometer-emotion-bar-fill.fear {
+  background-color: #800080; /* Purple */
+}
+
+.deleometer-emotion-bar-fill.surprise {
+  background-color: #FF8C00; /* Dark Orange */
+}
+
+.deleometer-emotion-value {
+  width: 30px;
+  text-align: right;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.deleometer-emotion-data {
+  margin-top: 1.5rem;
+}
+
+.deleometer-emotion-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.deleometer-emotion-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.deleometer-sentiment {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.deleometer-sentiment-indicator {
+  margin-top: 0.5rem;
+}
+
+.deleometer-sentiment-value {
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  border-radius: 1rem;
+  font-weight: bold;
+}
+
+.deleometer-sentiment-value.positive {
+  background-color: rgba(0, 128, 0, 0.2);
+  color: #006400;
+}
+
+.deleometer-sentiment-value.negative {
+  background-color: rgba(220, 20, 60, 0.2);
+  color: #8B0000;
+}
+
+.deleometer-sentiment-value.neutral {
+  background-color: rgba(128, 128, 128, 0.2);
+  color: #696969;
+}
+
+/* Insights styles */
+.deleometer-insights {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+}
+
+.deleometer-insights-icon {
+  font-size: 2rem;
+  color: var(--text-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleometer-insights-content {
+  flex: 1;
+}
+
+.deleometer-insights-content p {
+  margin: 0.5rem 0;
+}
+
+/* Personality styles */
+.deleometer-personality {
+  margin-top: 1rem;
+}
+
+.deleometer-personality-chart {
+  margin-top: 1rem;
+}
+
+.deleometer-trait-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  gap: 0.5rem;
+}
+
+.deleometer-trait-label {
+  width: 120px;
+  text-align: right;
+  font-size: 0.9rem;
+}
+
+.deleometer-trait-bar-container {
+  flex: 1;
+  height: 16px;
+  background-color: var(--background-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.deleometer-trait-bar-fill {
+  height: 100%;
+  background-color: var(--text-accent);
+  transition: width 0.3s ease;
+}
+
+.deleometer-trait-value {
+  width: 30px;
+  text-align: right;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.deleometer-no-data {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 2rem 0;
+}
