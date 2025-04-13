@@ -1,0 +1,37 @@
+/* Deleometer Plugin Styles */
+
+.deleometer-summary,
+.deleometer-frameworks,
+.deleometer-recommendations,
+.deleometer-comparison {
+  margin-bottom: 20px;
+}
+
+.deleometer-framework {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-left: 3px solid var(--interactive-accent);
+  background-color: var(--background-secondary);
+  border-radius: 4px;
+}
+
+.deleometer-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.deleometer-buttons button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--interactive-normal);
+  color: var(--text-normal);
+  border: none;
+}
+
+.deleometer-buttons button:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
