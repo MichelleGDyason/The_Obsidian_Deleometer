@@ -1,0 +1,138 @@
+/* Deleometer Plugin Styles */
+
+/* General styles */
+.deleometer-summary,
+.deleometer-frameworks,
+.deleometer-recommendations,
+.deleometer-comparison {
+  margin-bottom: 20px;
+}
+
+.deleometer-framework {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-left: 3px solid var(--interactive-accent);
+  background-color: var(--background-secondary);
+  border-radius: 4px;
+}
+
+.deleometer-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.deleometer-buttons button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--interactive-normal);
+  color: var(--text-normal);
+  border: none;
+}
+
+.deleometer-buttons button:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+/* File selection styles */
+.deleometer-file-list {
+  margin: 15px 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.deleometer-file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.deleometer-file-item:last-child {
+  border-bottom: none;
+}
+
+.deleometer-file-item button {
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--interactive-normal);
+  color: var(--text-normal);
+  border: none;
+}
+
+.deleometer-file-item button:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+/* Framework selection styles */
+.deleometer-framework-list {
+  margin: 15px 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.deleometer-framework-item {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  gap: 8px;
+}
+
+/* Tabs for comparative analysis */
+.deleometer-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--background-modifier-border);
+  margin-bottom: 15px;
+}
+
+.deleometer-tab {
+  padding: 8px 16px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+}
+
+.deleometer-tab:hover {
+  color: var(--text-normal);
+}
+
+.deleometer-tab-active {
+  border-bottom: 2px solid var(--interactive-accent);
+  color: var(--text-normal);
+}
+
+.deleometer-tab-content {
+  padding: 10px 0;
+}
+
+.deleometer-tab-pane {
+  display: none;
+}
+
+.deleometer-tab-pane-active {
+  display: block;
+}
+
+/* Analysis results styles */
+.deleometer-summary-section,
+.deleometer-key-points {
+  margin-bottom: 20px;
+}
+
+.deleometer-key-points ul {
+  margin-left: 20px;
+}
