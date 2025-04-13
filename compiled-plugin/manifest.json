@@ -1,0 +1,10 @@
+{
+  "id": "deleometer",
+  "name": "Deleometer",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "AI-powered journal analysis and artistic exploration using multiple theoretical frameworks",
+  "author": "Michelle G. Dyason",
+  "authorUrl": "https://github.com/MichelleGDyason",
+  "isDesktopOnly": false
+}
