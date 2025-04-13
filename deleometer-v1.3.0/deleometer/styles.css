@@ -1,0 +1,207 @@
+/* Deleometer Plugin Styles */
+
+/* General styles */
+.deleometer-summary,
+.deleometer-frameworks,
+.deleometer-recommendations,
+.deleometer-comparison,
+.deleometer-export,
+.deleometer-export-options,
+.deleometer-selected-files {
+  margin-bottom: 20px;
+}
+
+.deleometer-framework {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-left: 3px solid var(--interactive-accent);
+  background-color: var(--background-secondary);
+  border-radius: 4px;
+}
+
+.deleometer-buttons,
+.deleometer-export-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.deleometer-buttons button,
+.deleometer-export-buttons button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--interactive-normal);
+  color: var(--text-normal);
+  border: none;
+}
+
+.deleometer-buttons button:hover,
+.deleometer-export-buttons button:hover {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+/* Export format styles */
+.deleometer-export-format {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.deleometer-export-format select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: var(--background-primary);
+  color: var(--text-normal);
+  border: 1px solid var(--background-modifier-border);
+}
+
+/* Selected files styles */
+.deleometer-selected-files-list {
+  margin: 10px 0;
+  padding: 0;
+  list-style-type: none;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.deleometer-selected-files-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.deleometer-selected-files-list li:last-child {
+  border-bottom: none;
+}
+
+.deleometer-remove-file {
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--interactive-normal);
+  color: var(--text-normal);
+  border: none;
+}
+
+.deleometer-remove-file:hover {
+  background-color: var(--text-error-hover);
+  color: white;
+}
+
+/* Content selection styles */
+.deleometer-content-selection {
+  margin-bottom: 20px;
+}
+
+.deleometer-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.deleometer-file-browser {
+  margin-top: 10px;
+  margin-left: 24px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.deleometer-file-section {
+  margin-bottom: 15px;
+}
+
+.deleometer-file-section h4 {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+}
+
+.deleometer-file-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.deleometer-file-section li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+/* Framework selection styles */
+.deleometer-framework-selection {
+  margin-bottom: 20px;
+}
+
+.deleometer-framework-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.deleometer-framework-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tabs for comparative analysis */
+.deleometer-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--background-modifier-border);
+  margin-bottom: 15px;
+}
+
+.deleometer-tab {
+  padding: 8px 16px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+}
+
+.deleometer-tab:hover {
+  color: var(--text-normal);
+}
+
+.deleometer-tab-active {
+  border-bottom: 2px solid var(--interactive-accent);
+  color: var(--text-normal);
+}
+
+.deleometer-tab-content {
+  padding: 10px 0;
+}
+
+.deleometer-tab-pane {
+  display: none;
+}
+
+.deleometer-tab-pane-active {
+  display: block;
+}
+
+/* Settings styles */
+.setting-item-description {
+  font-size: 12px;
+  color: var(--text-muted);
+}
