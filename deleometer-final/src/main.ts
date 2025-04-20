@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, TFile, Notice } from 'obsidian';
+import { App, Plugin, TFile, Notice, WorkspaceLeaf } from 'obsidian';
 import { DEFAULT_SETTINGS, DeleometerSettings, FRAMEWORKS, MEDIA_TYPES } from './constants';
 import { AnalysisEngine, AnalysisResult } from './analysis-engine';
 import { DeleometerSettingTab } from './settings-tab';
@@ -8,8 +8,8 @@ import { __awaiter } from './tslib';
 export default class DeleometerPlugin extends Plugin {
     settings: DeleometerSettings;
     analysisEngine: AnalysisEngine;
-
-    onload() {
+    
+    onload(): Promise<void> {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('Loading Deleometer plugin');
 
@@ -19,61 +19,73 @@ export default class DeleometerPlugin extends Plugin {
             // Initialize analysis engine
             this.analysisEngine = new AnalysisEngine(this.app, this.settings);
 
-        // Add ribbon icon
-        const ribbonIconEl = this.addRibbonIcon('leaf', 'Deleometer', (evt: MouseEvent) => {
-            // Called when the user clicks the icon.
-            this.analyzeCurrentFile();
-        });
-
-        // Specify a tooltip for the ribbon icon
-        ribbonIconEl.addClass('deleometer-ribbon-class');
-
-        // Add command to analyze current file
-        this.addCommand({
-            id: 'analyze-current-file',
-            name: 'Analyze Current File',
-            callback: () => {
+            // Add ribbon icon
+            const ribbonIconEl = this.addRibbonIcon('leaf', 'Deleometer', (evt: MouseEvent) => {
+                // Called when the user clicks the icon.
                 this.analyzeCurrentFile();
-            }
-        });
-
-        // Add command to analyze selected text
-        this.addCommand({
-            id: 'analyze-selected-text',
-            name: 'Analyze Selected Text',
-            editorCallback: (editor, view) => {
-                const selectedText = editor.getSelection();
-                if (selectedText) {
-                    this.analyzeContent(selectedText, MEDIA_TYPES.TEXT);
+            });
+            
+            // Specify a tooltip for the ribbon icon
+            ribbonIconEl.addClass('deleometer-ribbon-class');
+            
+            // Add command to analyze current file
+            this.addCommand({
+                id: 'analyze-current-file',
+                name: 'Analyze Current File',
+                callback: () => {
+                    this.analyzeCurrentFile();
                 }
-            }
+            });
+            
+            // Add command to analyze selected text
+            this.addCommand({
+                id: 'analyze-selected-text',
+                name: 'Analyze Selected Text',
+                editorCallback: (editor: any, view: any) => {
+                    const selectedText = editor.getSelection();
+                    if (selectedText) {
+                        this.analyzeContent(selectedText, MEDIA_TYPES.TEXT);
+                    } else {
+                        new Notice('No text selected');
+                    }
+                }
+            });
+            
+            // Add settings tab
+            this.addSettingTab(new DeleometerSettingTab(this.app, this));
+            
+            // Add command to open the unified analysis modal
+            this.addCommand({
+                id: 'open-unified-analysis',
+                name: 'Open Unified Analysis',
+                callback: () => {
+                    this.showUnifiedAnalysisModal();
+                }
+            });
         });
-
-        // Add settings tab
-        this.addSettingTab(new DeleometerSettingTab(this.app, this));
     }
-
-    onunload() {
+    
+    onunload(): void {
         console.log('Unloading Deleometer plugin');
     }
-
-    loadSettings() {
+    
+    loadSettings(): Promise<void> {
         return __awaiter(this, void 0, void 0, function* () {
             this.settings = Object.assign({}, DEFAULT_SETTINGS, yield this.loadData());
         });
     }
-
-    saveSettings() {
+    
+    saveSettings(): Promise<void> {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.saveData(this.settings);
         });
     }
-
+    
     // Analyze the current active file
-    analyzeCurrentFile() {
+    analyzeCurrentFile(): Promise<void> {
         return __awaiter(this, void 0, void 0, function* () {
             const activeFile = this.app.workspace.getActiveFile();
-
+            
             if (!activeFile) {
                 // No active file
                 new Notice('No active file to analyze');
@@ -82,7 +94,7 @@ export default class DeleometerPlugin extends Plugin {
 
             // Determine media type based on file extension
             const mediaType = this.getMediaTypeFromFile(activeFile);
-
+            
             if (mediaType === MEDIA_TYPES.TEXT) {
                 // For text files, get the content
                 const content = yield this.app.vault.read(activeFile);
@@ -93,11 +105,11 @@ export default class DeleometerPlugin extends Plugin {
             }
         });
     }
-
+    
     // Determine media type from file extension
     getMediaTypeFromFile(file: TFile): string {
         const extension = file.extension.toLowerCase();
-
+        
         if (['md', 'txt', 'text'].includes(extension)) {
             return MEDIA_TYPES.TEXT;
         } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'].includes(extension)) {
@@ -111,15 +123,15 @@ export default class DeleometerPlugin extends Plugin {
             return MEDIA_TYPES.TEXT;
         }
     }
-
+    
     // Analyze content with the analysis engine
-    analyzeContent(content: string | TFile, mediaType: string, file?: TFile) {
+    analyzeContent(content: string | TFile, mediaType: string, file?: TFile): Promise<void> {
         return __awaiter(this, void 0, void 0, function* () {
             // Get enabled frameworks from settings
             const enabledFrameworks = Object.entries(this.settings.enabledFrameworks)
                 .filter(([_, enabled]) => enabled)
                 .map(([framework, _]) => framework);
-
+            
             if (enabledFrameworks.length === 0) {
                 new Notice('No analysis frameworks are enabled. Please enable at least one framework in settings.');
                 return;
@@ -128,10 +140,10 @@ export default class DeleometerPlugin extends Plugin {
             try {
                 // Show loading notice
                 new Notice('Analyzing content...');
-
+                
                 // Analyze the content
                 const result = this.analysisEngine.analyzeContent(content, mediaType, enabledFrameworks);
-
+                
                 // Display results
                 this.displayAnalysisResults(result, file);
             } catch (error) {
@@ -140,67 +152,57 @@ export default class DeleometerPlugin extends Plugin {
             }
         });
     }
-
+    
     // Display analysis results
-    displayAnalysisResults(result: AnalysisResult, file?: TFile) {
+    displayAnalysisResults(result: AnalysisResult, file?: TFile): void {
         // Create a markdown string with the analysis results
         let markdown = `# Deleometer Analysis\n\n`;
-
+        
         // Add file name if available
         if (result.fileName) {
             markdown += `**File:** ${result.fileName}\n\n`;
+        } else if (file) {
+            markdown += `**File:** ${file.path}\n\n`;
         }
-
+        
+        // Add media type
+        markdown += `**Media Type:** ${result.mediaType}\n\n`;
+        
         // Add summary
-        markdown += `## Summary\n${result.summary}\n\n`;
-
+        markdown += `## Summary\n\n${result.summary}\n\n`;
+        
         // Add framework analyses
         markdown += `## Framework Analyses\n\n`;
-
+        
         for (const [framework, analysis] of Object.entries(result.frameworkAnalyses)) {
             const frameworkName = this.analysisEngine.getFrameworkName(framework);
-            markdown += `### ${frameworkName}\n`;
-
-            if (typeof analysis === 'string') {
-                markdown += `${analysis}\n\n`;
-            } else {
-                // Handle specialized framework results
-                markdown += `${analysis.summary}\n\n`;
-
-                // Add additional details for specialized frameworks
-                if ('rhizomaticConnections' in analysis) {
-                    // Deleuzian analysis
-                    markdown += `**Rhizomatic Connections:** ${analysis.rhizomaticConnections.join(', ')}\n`;
-                    markdown += `**Assemblages:** ${analysis.assemblages.join(', ')}\n`;
-                    markdown += `**Deterritorializations:** ${analysis.deterritorializations.join(', ')}\n`;
-                    markdown += `**Body Without Organs:** ${analysis.bodyWithoutOrgans}\n\n`;
-                } else if ('sexualDifference' in analysis) {
-                    // Irigarayian analysis
-                    markdown += `**Sexual Difference:** ${analysis.sexualDifference.join(', ')}\n`;
-                    markdown += `**Feminine Speaking:** ${analysis.feminineSpeaking.join(', ')}\n`;
-                    markdown += `**Fluid Logic:** ${analysis.fluidLogic.join(', ')}\n`;
-                    markdown += `**Mimesis:** ${analysis.mimesis.join(', ')}\n\n`;
-                }
+            markdown += `### ${frameworkName}\n\n${analysis}\n\n`;
+        }
+        
+        // Add recommendations if available
+        if (result.recommendations && result.recommendations.length > 0) {
+            markdown += `## Recommendations\n\n`;
+            
+            for (const recommendation of result.recommendations) {
+                markdown += `- ${recommendation}\n`;
             }
         }
-
-        // Add recommendations
-        markdown += `## Recommendations\n\n`;
-        result.recommendations.forEach(recommendation => {
-            markdown += `- ${recommendation}\n`;
-        });
-
+        
         // Create a new leaf to display the results
-        const leaf = this.app.workspace.getLeaf('split');
-        leaf.openMarkdown(markdown, {
+        const leaf = this.app.workspace.getLeaf(true);
+        
+        // Set the leaf view to markdown
+        leaf.setViewState({
+            type: 'markdown',
             state: {
-                mode: 'preview'
+                mode: 'preview',
+                source: markdown
             }
         });
     }
-
+    
     // Show the unified analysis modal
-    showUnifiedAnalysisModal() {
+    showUnifiedAnalysisModal(): void {
         const modal = new UnifiedAnalysisModal(this.app, this);
         modal.open();
     }
