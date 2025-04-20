@@ -21,7 +21,8 @@ export const FRAMEWORKS = {
     CBT: 'cbt',
     HERMENEUTICS: 'hermeneutics',
     STOICISM: 'stoicism',
-    PSYCHIATRY: 'psychiatry'
+    PSYCHIATRY: 'psychiatry',
+    EPICUREAN: 'epicurean'
 };
 
 // Constants for media types
@@ -64,7 +65,8 @@ export const DEFAULT_SETTINGS: DeleometerSettings = {
         [FRAMEWORKS.CBT]: true,
         [FRAMEWORKS.HERMENEUTICS]: true,
         [FRAMEWORKS.STOICISM]: true,
-        [FRAMEWORKS.PSYCHIATRY]: true
+        [FRAMEWORKS.PSYCHIATRY]: true,
+        [FRAMEWORKS.EPICUREAN]: true
     },
     analysisDepth: 'standard',
     enableJournalingPrompts: true,

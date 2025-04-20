@@ -49,6 +49,7 @@ You can use `framework-template.ts` as a starting point for creating new framewo
 - Hermeneutics (hermeneutics.ts)
 - Stoicism (stoicism.ts)
 - Psychiatry (psychiatry.ts)
+- Epicurean (epicurean.ts)
 
 ## Framework Concepts
 

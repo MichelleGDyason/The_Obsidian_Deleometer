@@ -20,6 +20,7 @@ import { CbtAnalysis, CbtAnalysisResult } from './cbt';
 import { HermeneuticsAnalysis, HermeneuticsAnalysisResult } from './hermeneutics';
 import { StoicismAnalysis, StoicismAnalysisResult } from './stoicism';
 import { PsychiatryAnalysis, PsychiatryAnalysisResult } from './psychiatry';
+import { EpicureanAnalysis, EpicureanAnalysisResult } from './epicurean';
 
 // Export classes
 export {
@@ -44,7 +45,8 @@ export {
     CbtAnalysis,
     HermeneuticsAnalysis,
     StoicismAnalysis,
-    PsychiatryAnalysis
+    PsychiatryAnalysis,
+    EpicureanAnalysis
 };
 
 // Export interfaces
@@ -70,7 +72,8 @@ export type {
     CbtAnalysisResult,
     HermeneuticsAnalysisResult,
     StoicismAnalysisResult,
-    PsychiatryAnalysisResult
+    PsychiatryAnalysisResult,
+    EpicureanAnalysisResult
 };
 
 // Framework factory to get the appropriate analysis class
@@ -120,6 +123,8 @@ export function getFrameworkAnalysis(frameworkId: string): any {
             return new StoicismAnalysis();
         case 'psychiatry':
             return new PsychiatryAnalysis();
+        case 'epicurean':
+            return new EpicureanAnalysis();
         default:
             throw new Error(`Framework not implemented: ${frameworkId}`);
     }
