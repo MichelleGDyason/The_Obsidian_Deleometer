@@ -1,11 +1,11 @@
 import { App, TFile } from 'obsidian';
 import { FRAMEWORKS, MEDIA_TYPES, DeleometerSettings } from './constants';
-import { DeleuzianAnalysis, IrigarayianAnalysis, DeleuzianAnalysisResult, IrigarayianAnalysisResult } from './frameworks';
+import { getFrameworkAnalysis } from './frameworks/index';
 
 export interface AnalysisResult {
     mediaType: string;
     summary: string;
-    frameworkAnalyses: Record<string, string | DeleuzianAnalysisResult | IrigarayianAnalysisResult>;
+    frameworkAnalyses: Record<string, any>; // Can be string or any framework-specific result type
     recommendations: string[];
     fileName?: string;
 }
@@ -13,16 +13,10 @@ export interface AnalysisResult {
 export class AnalysisEngine {
     app: App;
     settings: DeleometerSettings;
-    deleuzianAnalysis: DeleuzianAnalysis;
-    irigarayianAnalysis: IrigarayianAnalysis;
 
     constructor(app: App, settings: DeleometerSettings) {
         this.app = app;
         this.settings = settings;
-
-        // Initialize framework analyzers
-        this.deleuzianAnalysis = new DeleuzianAnalysis();
-        this.irigarayianAnalysis = new IrigarayianAnalysis();
     }
 
     // Analyze any content based on its type
@@ -31,7 +25,7 @@ export class AnalysisEngine {
             // Check if mediaType is valid
             let isValidMediaType = false;
             for (const type in MEDIA_TYPES) {
-                if (MEDIA_TYPES[type] === mediaType) {
+                if (MEDIA_TYPES[type as keyof typeof MEDIA_TYPES] === mediaType) {
                     isValidMediaType = true;
                     break;
                 }
@@ -91,11 +85,12 @@ export class AnalysisEngine {
         // Generate analysis for each framework
         for (const framework of frameworks) {
             try {
-                if (framework === FRAMEWORKS.DELEUZIAN) {
-                    result.frameworkAnalyses[framework] = this.deleuzianAnalysis.analyzeContent(content, MEDIA_TYPES.TEXT);
-                } else if (framework === FRAMEWORKS.IRIGARAYIAN) {
-                    result.frameworkAnalyses[framework] = this.irigarayianAnalysis.analyzeContent(content, MEDIA_TYPES.TEXT);
-                } else {
+                // Try to get a specialized framework analyzer
+                try {
+                    const frameworkAnalyzer = getFrameworkAnalysis(framework);
+                    result.frameworkAnalyses[framework] = frameworkAnalyzer.analyzeContent(content, MEDIA_TYPES.TEXT);
+                } catch (e) {
+                    // Fall back to generic analysis if specialized framework not available
                     result.frameworkAnalyses[framework] = this.generateFrameworkAnalysis(content, framework, MEDIA_TYPES.TEXT);
                 }
             } catch (error) {
@@ -123,11 +118,12 @@ export class AnalysisEngine {
         // Generate analysis for each framework
         for (const framework of frameworks) {
             try {
-                if (framework === FRAMEWORKS.DELEUZIAN) {
-                    result.frameworkAnalyses[framework] = this.deleuzianAnalysis.analyzeContent(file, MEDIA_TYPES.IMAGE);
-                } else if (framework === FRAMEWORKS.IRIGARAYIAN) {
-                    result.frameworkAnalyses[framework] = this.irigarayianAnalysis.analyzeContent(file, MEDIA_TYPES.IMAGE);
-                } else {
+                // Try to get a specialized framework analyzer
+                try {
+                    const frameworkAnalyzer = getFrameworkAnalysis(framework);
+                    result.frameworkAnalyses[framework] = frameworkAnalyzer.analyzeContent(file, MEDIA_TYPES.IMAGE);
+                } catch (e) {
+                    // Fall back to generic analysis if specialized framework not available
                     result.frameworkAnalyses[framework] = this.generateFrameworkAnalysis(file.path, framework, MEDIA_TYPES.IMAGE);
                 }
             } catch (error) {
@@ -155,11 +151,12 @@ export class AnalysisEngine {
         // Generate analysis for each framework
         for (const framework of frameworks) {
             try {
-                if (framework === FRAMEWORKS.DELEUZIAN) {
-                    result.frameworkAnalyses[framework] = this.deleuzianAnalysis.analyzeContent(file, MEDIA_TYPES.AUDIO);
-                } else if (framework === FRAMEWORKS.IRIGARAYIAN) {
-                    result.frameworkAnalyses[framework] = this.irigarayianAnalysis.analyzeContent(file, MEDIA_TYPES.AUDIO);
-                } else {
+                // Try to get a specialized framework analyzer
+                try {
+                    const frameworkAnalyzer = getFrameworkAnalysis(framework);
+                    result.frameworkAnalyses[framework] = frameworkAnalyzer.analyzeContent(file, MEDIA_TYPES.AUDIO);
+                } catch (e) {
+                    // Fall back to generic analysis if specialized framework not available
                     result.frameworkAnalyses[framework] = this.generateFrameworkAnalysis(file.path, framework, MEDIA_TYPES.AUDIO);
                 }
             } catch (error) {
@@ -187,11 +184,12 @@ export class AnalysisEngine {
         // Generate analysis for each framework
         for (const framework of frameworks) {
             try {
-                if (framework === FRAMEWORKS.DELEUZIAN) {
-                    result.frameworkAnalyses[framework] = this.deleuzianAnalysis.analyzeContent(file, MEDIA_TYPES.FILM);
-                } else if (framework === FRAMEWORKS.IRIGARAYIAN) {
-                    result.frameworkAnalyses[framework] = this.irigarayianAnalysis.analyzeContent(file, MEDIA_TYPES.FILM);
-                } else {
+                // Try to get a specialized framework analyzer
+                try {
+                    const frameworkAnalyzer = getFrameworkAnalysis(framework);
+                    result.frameworkAnalyses[framework] = frameworkAnalyzer.analyzeContent(file, MEDIA_TYPES.FILM);
+                } catch (e) {
+                    // Fall back to generic analysis if specialized framework not available
                     result.frameworkAnalyses[framework] = this.generateFrameworkAnalysis(file.path, framework, MEDIA_TYPES.FILM);
                 }
             } catch (error) {
@@ -352,7 +350,7 @@ export class AnalysisEngine {
     }
 
     // Generate recommendations based on analyses
-    generateRecommendations(frameworkAnalyses: Record<string, string | DeleuzianAnalysisResult | IrigarayianAnalysisResult>): string[] {
+    generateRecommendations(frameworkAnalyses: Record<string, any>): string[] {
         // Generate general recommendations
         const recommendations = [
             "Reflect on recurring patterns and themes that emerged across different theoretical frameworks.",
@@ -361,19 +359,44 @@ export class AnalysisEngine {
         ];
 
         // Add framework-specific recommendations
-        if (FRAMEWORKS.DELEUZIAN in frameworkAnalyses) {
-            recommendations.push(
+        const frameworkRecommendations: Record<string, string[]> = {
+            [FRAMEWORKS.DELEUZIAN]: [
                 "Explore how Deleuzian concepts of rhizomes and assemblages might inform your creative practice.",
                 "Consider how lines of flight in your work could open up new possibilities for expression."
-            );
-        }
-
-        if (FRAMEWORKS.IRIGARAYIAN in frameworkAnalyses) {
-            recommendations.push(
+            ],
+            [FRAMEWORKS.IRIGARAYIAN]: [
                 "Reflect on how Irigaray's concept of sexual difference might inform your understanding of subjectivity.",
                 "Consider how fluid logic and non-linear expression could enrich your creative work."
-            );
-        }
+            ],
+            [FRAMEWORKS.FREUDIAN]: [
+                "Consider how unconscious processes might be influencing your creative work.",
+                "Explore the symbolic representations of desire in your content."
+            ],
+            [FRAMEWORKS.LACANIAN]: [
+                "Reflect on how language structures your experience and creative expression.",
+                "Consider the role of desire and lack in your work."
+            ],
+            [FRAMEWORKS.JUNGIAN]: [
+                "Explore archetypal patterns in your creative work.",
+                "Consider how collective unconscious symbols appear in your content."
+            ],
+            [FRAMEWORKS.EXISTENTIAL]: [
+                "Reflect on themes of freedom, choice, and authenticity in your work.",
+                "Consider how your creative practice contributes to meaning-making."
+            ],
+            [FRAMEWORKS.EPICUREAN]: [
+                "Consider how your work relates to the pursuit of tranquility and freedom from disturbance.",
+                "Explore the role of pleasure and natural desires in your creative expression."
+            ]
+            // Additional framework recommendations can be added here
+        };
+
+        // Add relevant framework-specific recommendations
+        Object.keys(frameworkAnalyses).forEach(framework => {
+            if (framework in frameworkRecommendations) {
+                recommendations.push(...frameworkRecommendations[framework]);
+            }
+        });
 
         return recommendations;
     }
@@ -402,7 +425,8 @@ export class AnalysisEngine {
             [FRAMEWORKS.CBT]: 'Cognitive Behavioral Therapy',
             [FRAMEWORKS.HERMENEUTICS]: 'Hermeneutics',
             [FRAMEWORKS.STOICISM]: 'Stoicism',
-            [FRAMEWORKS.PSYCHIATRY]: 'Psychiatry'
+            [FRAMEWORKS.PSYCHIATRY]: 'Psychiatry',
+            [FRAMEWORKS.EPICUREAN]: 'Epicurean Philosophy'
         };
 
         return names[frameworkId] || frameworkId;
