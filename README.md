@@ -47,7 +47,34 @@ Deleometer supports analysis through multiple theoretical lenses:
 
 ## Installation
 
-See [INSTALLATION.md](docs/INSTALLATION.md) for detailed installation instructions for all platforms (desktop, mobile, and web).
+### Quick Installation
+
+1. Download the `the-deleometer-obsidian-ai-deepself-discovery-journaling.zip` file from this repository
+2. Extract the zip file
+3. Copy the `the-deleometer-obsidian-ai-deepself-discovery-journaling` folder to your vault's `.obsidian/plugins/` directory
+4. Make sure the folder structure looks like this:
+   ```
+   .obsidian/plugins/the-deleometer-obsidian-ai-deepself-discovery-journaling/
+   ├── manifest.json
+   ├── styles.css
+   ├── README.md
+   └── build/
+       └── main.js
+   ```
+5. Restart Obsidian
+6. Enable the plugin in Settings > Community plugins
+
+For more detailed instructions, see [INSTALLATION.md](docs/INSTALLATION.md).
+
+### Troubleshooting
+
+If the plugin doesn't appear in Obsidian:
+
+1. Make sure you've copied the entire folder to the correct location
+2. Check that the folder name matches the plugin ID in the manifest.json file
+3. Verify that your Obsidian version is at least 0.15.0
+4. Try restarting Obsidian
+5. Check the developer console (Ctrl+Shift+I or Cmd+Option+I) for any error messages
 
 ## Usage
 
