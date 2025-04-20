@@ -8,28 +8,69 @@ import { AttachmentAnalysis, AttachmentAnalysisResult } from './attachment';
 import { PositiveAnalysis, PositiveAnalysisResult } from './positive';
 import { NarrativeAnalysis, NarrativeAnalysisResult } from './narrative';
 import { PhenomenologyAnalysis, PhenomenologyAnalysisResult } from './phenomenology';
+import { ExistentialAnalysis, ExistentialAnalysisResult } from './existential';
+import { FeministAnalysis, FeministAnalysisResult } from './feminist';
+import { CriticalAnalysis, CriticalAnalysisResult } from './critical';
+import { PosthumanismAnalysis, PosthumanismAnalysisResult } from './posthumanism';
+import { BuddhistAnalysis, BuddhistAnalysisResult } from './buddhist';
+import { NietzscheanAnalysis, NietzscheanAnalysisResult } from './nietzschean';
+import { GestaltAnalysis, GestaltAnalysisResult } from './gestalt';
+import { TranspersonalAnalysis, TranspersonalAnalysisResult } from './transpersonal';
+import { CbtAnalysis, CbtAnalysisResult } from './cbt';
+import { HermeneuticsAnalysis, HermeneuticsAnalysisResult } from './hermeneutics';
+import { StoicismAnalysis, StoicismAnalysisResult } from './stoicism';
+import { PsychiatryAnalysis, PsychiatryAnalysisResult } from './psychiatry';
 
+// Export classes
 export {
     DeleuzianAnalysis,
-    DeleuzianAnalysisResult,
     IrigarayianAnalysis,
-    IrigarayianAnalysisResult,
     TackticalAnalysis,
-    TackticalAnalysisResult,
     FreudianAnalysis,
-    FreudianAnalysisResult,
     LacanianAnalysis,
-    LacanianAnalysisResult,
     JungianAnalysis,
-    JungianAnalysisResult,
     AttachmentAnalysis,
-    AttachmentAnalysisResult,
     PositiveAnalysis,
-    PositiveAnalysisResult,
     NarrativeAnalysis,
-    NarrativeAnalysisResult,
     PhenomenologyAnalysis,
-    PhenomenologyAnalysisResult
+    ExistentialAnalysis,
+    FeministAnalysis,
+    CriticalAnalysis,
+    PosthumanismAnalysis,
+    BuddhistAnalysis,
+    NietzscheanAnalysis,
+    GestaltAnalysis,
+    TranspersonalAnalysis,
+    CbtAnalysis,
+    HermeneuticsAnalysis,
+    StoicismAnalysis,
+    PsychiatryAnalysis
+};
+
+// Export interfaces
+export type {
+    DeleuzianAnalysisResult,
+    IrigarayianAnalysisResult,
+    TackticalAnalysisResult,
+    FreudianAnalysisResult,
+    LacanianAnalysisResult,
+    JungianAnalysisResult,
+    AttachmentAnalysisResult,
+    PositiveAnalysisResult,
+    NarrativeAnalysisResult,
+    PhenomenologyAnalysisResult,
+    ExistentialAnalysisResult,
+    FeministAnalysisResult,
+    CriticalAnalysisResult,
+    PosthumanismAnalysisResult,
+    BuddhistAnalysisResult,
+    NietzscheanAnalysisResult,
+    GestaltAnalysisResult,
+    TranspersonalAnalysisResult,
+    CbtAnalysisResult,
+    HermeneuticsAnalysisResult,
+    StoicismAnalysisResult,
+    PsychiatryAnalysisResult
 };
 
 // Framework factory to get the appropriate analysis class
@@ -55,7 +96,30 @@ export function getFrameworkAnalysis(frameworkId: string): any {
             return new NarrativeAnalysis();
         case 'phenomenology':
             return new PhenomenologyAnalysis();
-        // Add cases for other frameworks as they are implemented
+        case 'existential':
+            return new ExistentialAnalysis();
+        case 'feminist':
+            return new FeministAnalysis();
+        case 'critical':
+            return new CriticalAnalysis();
+        case 'posthumanism':
+            return new PosthumanismAnalysis();
+        case 'buddhist':
+            return new BuddhistAnalysis();
+        case 'nietzschean':
+            return new NietzscheanAnalysis();
+        case 'gestalt':
+            return new GestaltAnalysis();
+        case 'transpersonal':
+            return new TranspersonalAnalysis();
+        case 'cbt':
+            return new CbtAnalysis();
+        case 'hermeneutics':
+            return new HermeneuticsAnalysis();
+        case 'stoicism':
+            return new StoicismAnalysis();
+        case 'psychiatry':
+            return new PsychiatryAnalysis();
         default:
             throw new Error(`Framework not implemented: ${frameworkId}`);
     }

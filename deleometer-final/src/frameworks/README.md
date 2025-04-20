@@ -37,6 +37,18 @@ You can use `framework-template.ts` as a starting point for creating new framewo
 - Positive (positive.ts)
 - Narrative (narrative.ts)
 - Phenomenology (phenomenology.ts)
+- Existential (existential.ts)
+- Feminist (feminist.ts)
+- Critical (critical.ts)
+- Posthumanism (posthumanism.ts)
+- Buddhist (buddhist.ts)
+- Nietzschean (nietzschean.ts)
+- Gestalt (gestalt.ts)
+- Transpersonal (transpersonal.ts)
+- CBT (cbt.ts)
+- Hermeneutics (hermeneutics.ts)
+- Stoicism (stoicism.ts)
+- Psychiatry (psychiatry.ts)
 
 ## Framework Concepts
 
