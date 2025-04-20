@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "module": "ESNext",
+    "target": "ES2017",
+    "allowJs": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "isolatedModules": true,
+    "strictNullChecks": true,
+    "lib": [
+      "DOM",
+      "ES2017",
+      "ES2018",
+      "ES2019",
+      "ES2020"
+    ],
+    "paths": {
+      "obsidian": ["src/obsidian.d.ts", "../node_modules/obsidian/dist/obsidian.d.ts"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "**/*.ts"
+  ]
+}
