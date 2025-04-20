@@ -1,7 +1,8 @@
-import { App, TFile } from 'obsidian';
-import { FRAMEWORKS, MEDIA_TYPES, DeleometerSettings } from './constants';
+import { App, TFile, Notice } from 'obsidian';
+import { FRAMEWORKS, MEDIA_TYPES, DeleometerSettings, AnalysisTier } from './constants';
 import { getFrameworkAnalysis } from './frameworks/index';
 import { getPredefinedAnalysis, generateGenericAnalysis } from './predefined-analyses';
+import { OpenAIService } from './services/openai-service';
 
 export interface AnalysisResult {
     mediaType: string;
@@ -14,10 +15,34 @@ export interface AnalysisResult {
 export class AnalysisEngine {
     app: App;
     settings: DeleometerSettings;
+    openaiService: OpenAIService | null = null;
 
     constructor(app: App, settings: DeleometerSettings) {
         this.app = app;
         this.settings = settings;
+
+        // Initialize OpenAI service if enabled
+        if (settings.enableOpenAI) {
+            this.openaiService = new OpenAIService(settings);
+        }
+    }
+
+    /**
+     * Update the engine configuration
+     */
+    updateConfig(settings: DeleometerSettings) {
+        this.settings = settings;
+
+        // Initialize or update OpenAI service
+        if (settings.enableOpenAI) {
+            if (this.openaiService) {
+                this.openaiService.updateConfig(settings);
+            } else {
+                this.openaiService = new OpenAIService(settings);
+            }
+        } else {
+            this.openaiService = null;
+        }
     }
 
     // Analyze any content based on its type
@@ -305,8 +330,65 @@ export class AnalysisEngine {
     }
 
     // Generate analysis for a specific framework
-    generateFrameworkAnalysis(contentPath: string, framework: string, mediaType: string): string {
-        // Use contentPath to personalize the analysis if needed
+    async generateFrameworkAnalysis(contentPath: string, framework: string, mediaType: string): Promise<string> {
+
+        // Check if we should use OpenAI for analysis
+        const shouldUseOpenAI = this.settings.enableOpenAI &&
+                               this.settings.analysisTier === AnalysisTier.PREMIUM &&
+                               this.openaiService?.isConfigured();
+
+        // Check if we've reached the usage limit
+        const reachedUsageLimit = this.settings.openaiUsageCount >= this.settings.openaiUsageLimit;
+
+        // If we should use OpenAI and haven't reached the usage limit, try to use it
+        if (shouldUseOpenAI && !reachedUsageLimit) {
+            try {
+                // Get the framework name for better prompting
+                const frameworkName = this.getFrameworkName(framework);
+
+                // Use OpenAI to generate the analysis
+                const openaiAnalysis = await this.openaiService!.analyzeContent(
+                    contentPath,
+                    framework,
+                    mediaType,
+                    frameworkName
+                );
+
+                // Increment the usage counter
+                this.settings.openaiUsageCount++;
+
+                // Adjust analysis based on depth setting
+                switch (this.settings.analysisDepth) {
+                    case 'brief':
+                        // Return first two sentences
+                        return openaiAnalysis.split('. ').slice(0, 2).join('. ') + '.';
+                    case 'detailed':
+                        // Return the full analysis plus additional detail
+                        return openaiAnalysis + ` Further exploration of this ${mediaType} through the ${frameworkName} framework would reveal additional layers of meaning and significance, particularly in relation to the specific cultural and historical contexts in which it was created and is being interpreted.`;
+                    case 'standard':
+                    default:
+                        // Return the full analysis as is
+                        return openaiAnalysis;
+                }
+            } catch (error) {
+                console.error('Error using OpenAI for analysis:', error);
+                new Notice('Error using OpenAI for analysis. Falling back to predefined analysis.');
+
+                // Fall back to predefined analysis
+                return this.getFallbackAnalysis(contentPath, framework, mediaType);
+            }
+        } else if (shouldUseOpenAI && reachedUsageLimit) {
+            // If we've reached the usage limit, show a notice and fall back to predefined analysis
+            new Notice(`You've reached your monthly OpenAI usage limit (${this.settings.openaiUsageLimit}). Falling back to predefined analysis.`);
+            return this.getFallbackAnalysis(contentPath, framework, mediaType);
+        } else {
+            // Use predefined analysis
+            return this.getFallbackAnalysis(contentPath, framework, mediaType);
+        }
+    }
+
+    // Get fallback analysis (predefined or generic)
+    getFallbackAnalysis(contentPath: string, framework: string, mediaType: string): string {
         const fileName = contentPath.split('/').pop() || contentPath;
 
         // Try to get a predefined analysis from the predefined-analyses directory

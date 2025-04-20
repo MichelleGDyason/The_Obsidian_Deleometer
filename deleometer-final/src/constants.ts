@@ -33,12 +33,31 @@ export const MEDIA_TYPES = {
     FILM: 'film'
 };
 
+// Tier options
+export enum AnalysisTier {
+    FREE = 'free',
+    PREMIUM = 'premium'
+}
+
+// OpenAI model options
+export enum OpenAIModel {
+    GPT_3_5 = 'gpt-3.5-turbo',
+    GPT_4 = 'gpt-4'
+}
+
 // Interface for plugin settings
 export interface DeleometerSettings {
     enabledFrameworks: Record<string, boolean>;
     analysisDepth: 'brief' | 'standard' | 'detailed';
     enableJournalingPrompts: boolean;
     autoOpenExportedFiles: boolean;
+    analysisTier: AnalysisTier;
+    enableOpenAI: boolean;
+    openaiApiKey: string;
+    openaiModel: OpenAIModel;
+    openaiUsageLimit: number;
+    openaiUsageCount: number;
+    openaiLastReset: number; // Timestamp
 }
 
 // Default plugin settings
@@ -70,5 +89,12 @@ export const DEFAULT_SETTINGS: DeleometerSettings = {
     },
     analysisDepth: 'standard',
     enableJournalingPrompts: true,
-    autoOpenExportedFiles: true
+    autoOpenExportedFiles: true,
+    analysisTier: AnalysisTier.FREE,
+    enableOpenAI: false,
+    openaiApiKey: '',
+    openaiModel: OpenAIModel.GPT_3_5,
+    openaiUsageLimit: 50, // Default limit of 50 analyses per month
+    openaiUsageCount: 0,
+    openaiLastReset: Date.now()
 };

@@ -2,30 +2,45 @@ import { App, Modal, Setting, Notice } from 'obsidian';
 import { FRAMEWORKS, MEDIA_TYPES } from './constants';
 import DeleometerPlugin from './main';
 
-export class UnifiedAnalysisModal extends Modal {
+export class UnifiedAnalysisModal {
+    app: App;
     plugin: DeleometerPlugin;
     selectedFrameworks: string[] = [];
     selectedMediaType: string = MEDIA_TYPES.TEXT;
     content: string = '';
     file: any = null;
-
+    modal: any;
+    contentEl: HTMLElement;
+    
     constructor(app: App, plugin: DeleometerPlugin) {
-        super(app);
+        this.app = app;
         this.plugin = plugin;
+        this.modal = new Modal(app);
+        this.contentEl = this.modal.contentEl;
         
         // Initialize with enabled frameworks from settings
         this.selectedFrameworks = Object.entries(this.plugin.settings.enabledFrameworks)
             .filter(([_, enabled]) => enabled)
             .map(([framework, _]) => framework);
     }
-
+    
+    open() {
+        this.modal.open();
+        this.onOpen();
+    }
+    
+    close() {
+        this.onClose();
+        this.modal.close();
+    }
+    
     onOpen() {
-        const { contentEl } = this;
+        this.contentEl.empty();
         
-        contentEl.createEl('h2', { text: 'Theoretical Analysis' });
+        this.contentEl.createEl('h2', { text: 'Theoretical Analysis' });
         
         // Media type selection
-        new Setting(contentEl)
+        new Setting(this.contentEl)
             .setName('Media Type')
             .setDesc('Select the type of content to analyze')
             .addDropdown(dropdown => {
@@ -41,7 +56,7 @@ export class UnifiedAnalysisModal extends Modal {
             });
         
         // Framework selection
-        const frameworksContainer = contentEl.createDiv({ cls: 'deleometer-frameworks' });
+        const frameworksContainer = this.contentEl.createDiv({ cls: 'deleometer-frameworks' });
         frameworksContainer.createEl('h3', { text: 'Select Frameworks' });
         
         // Create a checkbox for each framework
@@ -69,7 +84,7 @@ export class UnifiedAnalysisModal extends Modal {
         });
         
         // Add buttons
-        const buttonContainer = contentEl.createDiv({ cls: 'deleometer-buttons' });
+        const buttonContainer = this.contentEl.createDiv({ cls: 'deleometer-buttons' });
         
         // Select All button
         buttonContainer.createEl('button', { text: 'Select All' })
@@ -93,10 +108,9 @@ export class UnifiedAnalysisModal extends Modal {
                 this.analyze();
             });
     }
-
+    
     onClose() {
-        const { contentEl } = this;
-        contentEl.empty();
+        this.contentEl.empty();
     }
     
     // Analyze the current content
@@ -113,7 +127,9 @@ export class UnifiedAnalysisModal extends Modal {
             
             if (this.selectedMediaType === MEDIA_TYPES.TEXT) {
                 // For text, get the content from the editor
-                const editor = this.app.workspace.activeEditor?.editor;
+                const activeLeaf = this.app.workspace.activeLeaf;
+                const editor = activeLeaf?.view?.sourceMode?.cmEditor;
+                
                 if (editor) {
                     const content = editor.getValue();
                     this.close();
