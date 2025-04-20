@@ -11,6 +11,24 @@ import { irigarayianAnalyses } from './irigarayian';
 import { freudianAnalyses } from './freudian';
 import { lacanianAnalyses } from './lacanian';
 import { epicureanAnalyses } from './epicurean';
+import { attachmentAnalyses } from './attachment';
+import { buddhistAnalyses } from './buddhist';
+import { cbtAnalyses } from './cbt';
+import { criticalAnalyses } from './critical';
+import { existentialAnalyses } from './existential';
+import { feministAnalyses } from './feminist';
+import { gestaltAnalyses } from './gestalt';
+import { hermeneuticsAnalyses } from './hermeneutics';
+import { jungianAnalyses } from './jungian';
+import { narrativeAnalyses } from './narrative';
+import { nietzscheanAnalyses } from './nietzschean';
+import { phenomenologyAnalyses } from './phenomenology';
+import { positiveAnalyses } from './positive';
+import { posthumanismAnalyses } from './posthumanism';
+import { psychiatryAnalyses } from './psychiatry';
+import { stoicismAnalyses } from './stoicism';
+import { tackticalAnalyses } from './tacktical';
+import { transpersonalAnalyses } from './transpersonal';
 
 // Map of framework IDs to predefined analyses
 export const predefinedAnalyses: Record<string, PredefinedAnalyses> = {
@@ -19,7 +37,24 @@ export const predefinedAnalyses: Record<string, PredefinedAnalyses> = {
     'freudian': freudianAnalyses,
     'lacanian': lacanianAnalyses,
     'epicurean': epicureanAnalyses,
-    // Additional frameworks can be added here as they are implemented
+    'attachment': attachmentAnalyses,
+    'buddhist': buddhistAnalyses,
+    'cbt': cbtAnalyses,
+    'critical': criticalAnalyses,
+    'existential': existentialAnalyses,
+    'feminist': feministAnalyses,
+    'gestalt': gestaltAnalyses,
+    'hermeneutics': hermeneuticsAnalyses,
+    'jungian': jungianAnalyses,
+    'narrative': narrativeAnalyses,
+    'nietzschean': nietzscheanAnalyses,
+    'phenomenology': phenomenologyAnalyses,
+    'positive': positiveAnalyses,
+    'posthumanism': posthumanismAnalyses,
+    'psychiatry': psychiatryAnalyses,
+    'stoicism': stoicismAnalyses,
+    'tacktical': tackticalAnalyses,
+    'transpersonal': transpersonalAnalyses
 };
 
 /**

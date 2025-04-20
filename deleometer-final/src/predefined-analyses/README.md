@@ -60,31 +60,28 @@ When writing predefined analyses, consider the following:
 4. **Accessibility**: Balance technical terminology with clear explanations
 5. **Consistency**: Maintain a consistent style and depth across frameworks
 
-## Currently Implemented Frameworks
+## Implemented Frameworks
 
 - Deleuzian (deleuzian.ts)
 - Irigarayian (irigarayian.ts)
 - Freudian (freudian.ts)
 - Lacanian (lacanian.ts)
 - Epicurean (epicurean.ts)
-
-## Frameworks to Implement
-
-- Jungian
-- Attachment
-- Positive
-- Narrative
-- Phenomenology
-- Existential
-- Feminist
-- Critical
-- Posthumanism
-- Buddhist
-- Nietzschean
-- Gestalt
-- Transpersonal
-- CBT
-- Hermeneutics
-- Stoicism
-- Psychiatry
-- Tacktical
+- Jungian (jungian.ts)
+- Attachment (attachment.ts)
+- Positive (positive.ts)
+- Narrative (narrative.ts)
+- Phenomenology (phenomenology.ts)
+- Existential (existential.ts)
+- Feminist (feminist.ts)
+- Critical (critical.ts)
+- Posthumanism (posthumanism.ts)
+- Buddhist (buddhist.ts)
+- Nietzschean (nietzschean.ts)
+- Gestalt (gestalt.ts)
+- Transpersonal (transpersonal.ts)
+- CBT (cbt.ts)
+- Hermeneutics (hermeneutics.ts)
+- Stoicism (stoicism.ts)
+- Psychiatry (psychiatry.ts)
+- Tacktical (tacktical.ts)
