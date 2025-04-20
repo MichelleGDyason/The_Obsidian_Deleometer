@@ -11,6 +11,7 @@ export class DeleometerSettingTab extends PluginSettingTab {
     }
 
     display(): void {
+        // @ts-ignore: containerEl is inherited from PluginSettingTab
         const {containerEl} = this;
         containerEl.empty();
 
@@ -127,7 +128,7 @@ export class DeleometerSettingTab extends PluginSettingTab {
             .addText(text => text
                 .setPlaceholder('sk-...')
                 .setValue(this.plugin.settings.openaiApiKey)
-                .onChange(async (value) => {
+                .onChanged(async (value: string) => {
                     this.plugin.settings.openaiApiKey = value;
                     await this.plugin.saveSettings();
 
@@ -162,7 +163,6 @@ export class DeleometerSettingTab extends PluginSettingTab {
             .addSlider(slider => slider
                 .setLimits(10, 500, 10)
                 .setValue(this.plugin.settings.openaiUsageLimit)
-                .setDynamicTooltip()
                 .onChange(async (value) => {
                     this.plugin.settings.openaiUsageLimit = value;
                     await this.plugin.saveSettings();
