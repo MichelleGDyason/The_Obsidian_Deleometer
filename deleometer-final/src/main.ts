@@ -1,27 +1,30 @@
-import { App, Plugin, PluginSettingTab, Setting, TFile } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, TFile, Notice } from 'obsidian';
 import { DEFAULT_SETTINGS, DeleometerSettings, FRAMEWORKS, MEDIA_TYPES } from './constants';
 import { AnalysisEngine, AnalysisResult } from './analysis-engine';
 import { DeleometerSettingTab } from './settings-tab';
+import { UnifiedAnalysisModal } from './unified-analysis-modal';
+import { __awaiter } from './tslib';
 
 export default class DeleometerPlugin extends Plugin {
     settings: DeleometerSettings;
     analysisEngine: AnalysisEngine;
 
-    async onload() {
-        console.log('Loading Deleometer plugin');
+    onload() {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('Loading Deleometer plugin');
 
-        // Load settings
-        await this.loadSettings();
+            // Load settings
+            yield this.loadSettings();
 
-        // Initialize analysis engine
-        this.analysisEngine = new AnalysisEngine(this.app, this.settings);
+            // Initialize analysis engine
+            this.analysisEngine = new AnalysisEngine(this.app, this.settings);
 
         // Add ribbon icon
         const ribbonIconEl = this.addRibbonIcon('leaf', 'Deleometer', (evt: MouseEvent) => {
             // Called when the user clicks the icon.
             this.analyzeCurrentFile();
         });
-        
+
         // Specify a tooltip for the ribbon icon
         ribbonIconEl.addClass('deleometer-ribbon-class');
 
@@ -54,41 +57,47 @@ export default class DeleometerPlugin extends Plugin {
         console.log('Unloading Deleometer plugin');
     }
 
-    async loadSettings() {
-        this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    loadSettings() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.settings = Object.assign({}, DEFAULT_SETTINGS, yield this.loadData());
+        });
     }
 
-    async saveSettings() {
-        await this.saveData(this.settings);
+    saveSettings() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.saveData(this.settings);
+        });
     }
 
     // Analyze the current active file
-    async analyzeCurrentFile() {
-        const activeFile = this.app.workspace.getActiveFile();
-        
-        if (!activeFile) {
-            // No active file
-            new Notice('No active file to analyze');
-            return;
-        }
+    analyzeCurrentFile() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const activeFile = this.app.workspace.getActiveFile();
 
-        // Determine media type based on file extension
-        const mediaType = this.getMediaTypeFromFile(activeFile);
-        
-        if (mediaType === MEDIA_TYPES.TEXT) {
-            // For text files, get the content
-            const content = await this.app.vault.read(activeFile);
-            this.analyzeContent(content, mediaType, activeFile);
-        } else {
-            // For other media types, pass the file directly
-            this.analyzeContent(activeFile, mediaType);
-        }
+            if (!activeFile) {
+                // No active file
+                new Notice('No active file to analyze');
+                return;
+            }
+
+            // Determine media type based on file extension
+            const mediaType = this.getMediaTypeFromFile(activeFile);
+
+            if (mediaType === MEDIA_TYPES.TEXT) {
+                // For text files, get the content
+                const content = yield this.app.vault.read(activeFile);
+                this.analyzeContent(content, mediaType, activeFile);
+            } else {
+                // For other media types, pass the file directly
+                this.analyzeContent(activeFile, mediaType);
+            }
+        });
     }
 
     // Determine media type from file extension
     getMediaTypeFromFile(file: TFile): string {
         const extension = file.extension.toLowerCase();
-        
+
         if (['md', 'txt', 'text'].includes(extension)) {
             return MEDIA_TYPES.TEXT;
         } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'].includes(extension)) {
@@ -104,58 +113,60 @@ export default class DeleometerPlugin extends Plugin {
     }
 
     // Analyze content with the analysis engine
-    async analyzeContent(content: string | TFile, mediaType: string, file?: TFile) {
-        // Get enabled frameworks from settings
-        const enabledFrameworks = Object.entries(this.settings.enabledFrameworks)
-            .filter(([_, enabled]) => enabled)
-            .map(([framework, _]) => framework);
-        
-        if (enabledFrameworks.length === 0) {
-            new Notice('No analysis frameworks are enabled. Please enable at least one framework in settings.');
-            return;
-        }
+    analyzeContent(content: string | TFile, mediaType: string, file?: TFile) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Get enabled frameworks from settings
+            const enabledFrameworks = Object.entries(this.settings.enabledFrameworks)
+                .filter(([_, enabled]) => enabled)
+                .map(([framework, _]) => framework);
 
-        try {
-            // Show loading notice
-            new Notice('Analyzing content...');
-            
-            // Analyze the content
-            const result = this.analysisEngine.analyzeContent(content, mediaType, enabledFrameworks);
-            
-            // Display results
-            this.displayAnalysisResults(result, file);
-        } catch (error) {
-            console.error('Error analyzing content:', error);
-            new Notice('Error analyzing content. Check console for details.');
-        }
+            if (enabledFrameworks.length === 0) {
+                new Notice('No analysis frameworks are enabled. Please enable at least one framework in settings.');
+                return;
+            }
+
+            try {
+                // Show loading notice
+                new Notice('Analyzing content...');
+
+                // Analyze the content
+                const result = this.analysisEngine.analyzeContent(content, mediaType, enabledFrameworks);
+
+                // Display results
+                this.displayAnalysisResults(result, file);
+            } catch (error) {
+                console.error('Error analyzing content:', error);
+                new Notice('Error analyzing content. Check console for details.');
+            }
+        });
     }
 
     // Display analysis results
     displayAnalysisResults(result: AnalysisResult, file?: TFile) {
         // Create a markdown string with the analysis results
         let markdown = `# Deleometer Analysis\n\n`;
-        
+
         // Add file name if available
         if (result.fileName) {
             markdown += `**File:** ${result.fileName}\n\n`;
         }
-        
+
         // Add summary
         markdown += `## Summary\n${result.summary}\n\n`;
-        
+
         // Add framework analyses
         markdown += `## Framework Analyses\n\n`;
-        
+
         for (const [framework, analysis] of Object.entries(result.frameworkAnalyses)) {
             const frameworkName = this.analysisEngine.getFrameworkName(framework);
             markdown += `### ${frameworkName}\n`;
-            
+
             if (typeof analysis === 'string') {
                 markdown += `${analysis}\n\n`;
             } else {
                 // Handle specialized framework results
                 markdown += `${analysis.summary}\n\n`;
-                
+
                 // Add additional details for specialized frameworks
                 if ('rhizomaticConnections' in analysis) {
                     // Deleuzian analysis
@@ -172,13 +183,13 @@ export default class DeleometerPlugin extends Plugin {
                 }
             }
         }
-        
+
         // Add recommendations
         markdown += `## Recommendations\n\n`;
         result.recommendations.forEach(recommendation => {
             markdown += `- ${recommendation}\n`;
         });
-        
+
         // Create a new leaf to display the results
         const leaf = this.app.workspace.getLeaf('split');
         leaf.openMarkdown(markdown, {
@@ -187,10 +198,10 @@ export default class DeleometerPlugin extends Plugin {
             }
         });
     }
-}
 
-// Helper function to display notices
-function Notice(message: string) {
-    const notice = new (window as any).Notice(message, 5000);
-    return notice;
+    // Show the unified analysis modal
+    showUnifiedAnalysisModal() {
+        const modal = new UnifiedAnalysisModal(this.app, this);
+        modal.open();
+    }
 }
