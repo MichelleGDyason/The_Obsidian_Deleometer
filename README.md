@@ -17,4 +17,4 @@ However, I reserve the right to relicense under MIT in the future if:
 
 ## Support My Work
 
-If this plugin helps you, consider [buying me a coffee](https://buymeacoffee.com/theobsidiay) or  [sponsoring me on GitHub](https://github.com/sponsors/MichelleGDyason) or [Patreon](https://www.patreon.com/c/AI_Deep_Self_Discovery_Journaling)
+If this plugin helps you, consider [buying me a coffee](https://buymeacoffee.com/michellegdyason) or [sponsoring me on GitHub](https://github.com/sponsors/MichelleGDyason) or [supporting me on Patreon](https://www.patreon.com/c/AI_Deep_Self_Discovery_Journaling).
